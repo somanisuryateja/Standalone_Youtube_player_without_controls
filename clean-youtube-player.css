@@ -1,0 +1,194 @@
+/* Clean YouTube Player — brand-free embed, no native controls/logo/title. */
+
+.cyp {
+  --cyp-accent: #6d28d9; /* purple; override to rebrand */
+  --cyp-accent-hover: #5b21b6;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #000;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  color: #fff;
+  user-select: none;
+}
+
+/* iframe is taller than the frame and shifted up so YouTube's title bar (top)
+   and watermark/logo (bottom) — which controls=0 can't remove — are cropped. */
+.cyp__mount {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.cyp__mount iframe {
+  position: absolute;
+  left: 0;
+  top: -14%;
+  width: 100%;
+  height: 128%;
+  border: 0;
+}
+
+/* Our own click surface: toggles play/pause, blocks clicks into YouTube. */
+.cyp__click {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+}
+
+/* Poster — covers YouTube's branded start AND pause screens. */
+.cyp__poster {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  cursor: pointer;
+  border: 0;
+  padding: 0;
+  background: #000;
+  overflow: hidden;
+}
+.cyp__poster img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.cyp__poster::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.cyp__bigplay {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 9999px;
+  background: var(--cyp-accent);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 0 4px rgba(255, 255, 255, 0.2);
+}
+.cyp__bigplay svg { width: 30px; height: 30px; fill: #fff; }
+
+/* Ended overlay — covers YouTube's recommendation grid. */
+.cyp__ended {
+  position: absolute;
+  inset: 0;
+  z-index: 25;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: rgba(0, 0, 0, 0.85);
+}
+.cyp.is-ended .cyp__ended { display: flex; }
+.cyp__replay {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--cyp-accent);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.cyp__replay:hover { background: var(--cyp-accent-hover); }
+.cyp__replay svg { width: 16px; height: 16px; fill: #fff; }
+
+/* Control bar. */
+.cyp__bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 22;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 24px 12px 8px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.cyp:hover .cyp__bar,
+.cyp__bar:focus-within { opacity: 1; }
+.cyp.is-paused .cyp__bar { opacity: 0; } /* poster covers paused state */
+
+.cyp__row { display: flex; align-items: center; gap: 12px; }
+.cyp__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 0;
+  color: #fff;
+  cursor: pointer;
+  padding: 2px;
+}
+.cyp__btn:hover { color: #c4b5fd; }
+.cyp__btn svg { width: 20px; height: 20px; fill: currentColor; }
+
+.cyp__range {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 5px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  accent-color: var(--cyp-accent);
+}
+.cyp__seek { width: 100%; }
+.cyp__vol { width: 80px; height: 4px; }
+
+.cyp__time {
+  font-variant-numeric: tabular-nums;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.9);
+}
+.cyp__spacer { flex: 1; }
+.cyp__speed {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: transparent;
+  border: 0;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.cyp__speed:hover { background: rgba(255, 255, 255, 0.1); }
+.cyp__speed svg { width: 16px; height: 16px; fill: currentColor; }
+
+.cyp__error {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.9);
+  font-size: 14px;
+}
+.cyp.is-error .cyp__error { display: flex; }

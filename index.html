@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clean YouTube Player — no logo, no controls, no branding</title>
+  <link rel="stylesheet" href="clean-youtube-player.css" />
+  <style>
+    :root { color-scheme: light dark; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      background: #0b0b10;
+      color: #e7e7ee;
+      line-height: 1.5;
+    }
+    .wrap { max-width: 880px; margin: 0 auto; padding: 32px 20px 64px; }
+    h1 { font-size: 1.6rem; margin: 0 0 4px; }
+    p.sub { margin: 0 0 24px; color: #9b9bb0; }
+    .controls { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+    input[type="text"] {
+      flex: 1; min-width: 240px; padding: 10px 12px; border-radius: 8px;
+      border: 1px solid #2a2a38; background: #15151f; color: #fff; font-size: 14px;
+    }
+    button.load {
+      padding: 10px 18px; border: 0; border-radius: 8px; cursor: pointer;
+      background: #6d28d9; color: #fff; font-weight: 600; font-size: 14px;
+    }
+    button.load:hover { background: #5b21b6; }
+    .note { margin-top: 24px; padding: 16px; border-radius: 10px; background: #15151f; border: 1px solid #2a2a38; font-size: 14px; color: #b9b9c8; }
+    .note strong { color: #e7e7ee; }
+    code { background: #222230; padding: 1px 6px; border-radius: 5px; font-size: 13px; }
+    .err { color: #f87171; font-size: 14px; min-height: 18px; margin: 8px 0 0; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Clean YouTube Player</h1>
+    <p class="sub">Branding-free playback — no YouTube logo, title, share, or recommendations.</p>
+
+    <div class="controls">
+      <input id="url" type="text" value="https://www.youtube.com/watch?v=aqz-KE-bpKQ" placeholder="Paste a YouTube URL…" />
+      <button class="load" id="loadBtn">Load video</button>
+    </div>
+    <p class="err" id="err"></p>
+
+    <div id="player"></div>
+
+    <div class="note">
+      <p><strong>How it works:</strong> the embed uses <code>controls=0</code>, a custom poster that
+      covers YouTube's start/pause screens, and an iframe crop that hides the title bar and watermark
+      during playback. All playback runs through your own control bar.</p>
+      <p style="margin-bottom:0"><strong>Not DRM:</strong> the video is still served by YouTube's free CDN
+      and the source ID is discoverable via devtools. For paid/secure content use Cloudflare Stream or
+      Vimeo Pro with signed URLs.</p>
+    </div>
+  </div>
+
+  <script src="clean-youtube-player.js"></script>
+  <script>
+    var playerEl = document.getElementById("player");
+    var urlInput = document.getElementById("url");
+    var errEl = document.getElementById("err");
+    var current = null;
+
+    function load() {
+      var id = CleanYouTubePlayer.extractId(urlInput.value.trim());
+      if (!id) { errEl.textContent = "Please paste a valid YouTube link."; return; }
+      errEl.textContent = "";
+      if (current) current.destroy();
+      current = new CleanYouTubePlayer(playerEl, { videoId: id });
+    }
+
+    document.getElementById("loadBtn").addEventListener("click", load);
+    urlInput.addEventListener("keydown", function (e) { if (e.key === "Enter") load(); });
+    load();
+  </script>
+</body>
+</html>
