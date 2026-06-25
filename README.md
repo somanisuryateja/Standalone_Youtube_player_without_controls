@@ -8,7 +8,7 @@
 
 A tiny, **dependency-free** clean YouTube player — embed YouTube videos with **no YouTube logo, title bar, share button, native controls, or end-screen recommendations**. Renders its own sleek, minimal control bar.
 
-![Demo Animation Placeholder](https://placehold.co/800x450/6d28d9/ffffff?text=Replace+with+Demo+GIF+Here)
+![Demo Animation](demo.webp)
 
 </div>
 
