@@ -1,35 +1,48 @@
-# Standalone_Youtube_player_without_controls
+<div align="center">
 
-A tiny, dependency-free **clean YouTube player** — embed YouTube videos with **no YouTube logo, no title bar, no share button, no native controls, and no end-screen recommendations**. It renders its own minimal control bar instead (play/pause, seek, volume, speed, fullscreen).
+# 🎬 Standalone YouTube Player Without Controls (Vanilla JS)
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Vanilla JS](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![Zero Dependencies](https://img.shields.io/badge/Dependencies-0-brightgreen.svg)]()
+
+A tiny, **dependency-free** clean YouTube player — embed YouTube videos with **no YouTube logo, title bar, share button, native controls, or end-screen recommendations**. Renders its own sleek, minimal control bar.
+
+![Demo Animation Placeholder](https://placehold.co/800x450/6d28d9/ffffff?text=Replace+with+Demo+GIF+Here)
+
+</div>
+
+---
+
+## ✨ Why this?
 
 This is the same technique learning platforms like **Learnyst / Tutor LMS** use to make YouTube-hosted lessons look like a native, branding-free player — while still using YouTube's free, unlimited CDN.
 
-## Demo
+> **Note:** Looking for the React version? See the [React Version](https://github.com/somanisuryateja/Standalone_Youtube_player_without_controls_React).
+
+## 🚀 Live Demo
 
 Open `index.html` in a browser (or serve the folder), paste any YouTube URL, and hit **Load video**.
 
 ```bash
-# any static server works, e.g.:
+# Any static server works, e.g.:
 npx serve .
-# then open http://localhost:3000
+# Then open http://localhost:3000
 ```
 
-## How it stays "clean"
-
-YouTube's IFrame API can't fully remove branding by itself, so this combines three tricks:
-
-1. **`controls=0`** — hides all native YouTube UI during playback.
-2. **Custom poster** — a thumbnail + play button covers YouTube's branded **start screen** and **pause screen** (where the title, share, watch-later and logo always appear).
-3. **Iframe crop** — the iframe is rendered slightly taller than the frame and shifted up, so the title bar (top) and watermark/logo (bottom) are cropped out of view while the 16:9 video still fills the frame exactly.
-
-A transparent overlay also blocks all clicks into the iframe (no right-click menu, no clickable recommendations).
-
-## Usage
+## 🛠️ Usage
 
 ```html
+<!-- 1. Include the styles -->
 <link rel="stylesheet" href="clean-youtube-player.css" />
+
+<!-- 2. Create a container -->
 <div id="player"></div>
+
+<!-- 3. Include the script -->
 <script src="clean-youtube-player.js"></script>
+
+<!-- 4. Initialize the player -->
 <script>
   const player = new CleanYouTubePlayer(document.getElementById("player"), {
     videoId: "aqz-KE-bpKQ",   // or:  url: "https://youtu.be/aqz-KE-bpKQ"
@@ -38,27 +51,46 @@ A transparent overlay also blocks all clicks into the iframe (no right-click men
 </script>
 ```
 
-### API
+## ⚙️ Configuration API
 
-| Option   | Type     | Description                                  |
-| -------- | -------- | -------------------------------------------- |
-| `videoId`| `string` | YouTube video ID                             |
-| `url`    | `string` | Full YouTube URL (used if `videoId` omitted) |
-| `accent` | `string` | CSS color for buttons (default purple)       |
+| Option | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `videoId` | `string` | **Required*** | The YouTube video ID. |
+| `url` | `string` | **Required*** | Full YouTube URL (used if `videoId` omitted). |
+| `accent` | `string` | `"#6d28d9"` | CSS hex color for control buttons/progress. |
 
-Methods: `toggle()`, `toggleMute()`, `destroy()`.
-Static: `CleanYouTubePlayer.extractId(urlOrId)`.
+**Methods:**
+- `player.toggle()`
+- `player.toggleMute()`
+- `player.destroy()`
 
-## Files
+**Static Methods:**
+- `CleanYouTubePlayer.extractId(urlOrId)`
 
-- `clean-youtube-player.js` — the player (vanilla JS, ~6 KB)
-- `clean-youtube-player.css` — styles
-- `index.html` — demo page
+## 📁 Files included
 
-## Important: this is not DRM
+- `clean-youtube-player.js` — The core player logic (~6 KB).
+- `clean-youtube-player.css` — Responsive, minimal styles.
+- `index.html` — Interactive demo page.
 
-The video is still served by YouTube and the source video ID is discoverable via browser devtools. This is great for **normal / free lessons** where you want a clean look and YouTube's free bandwidth. For **paid or piracy-sensitive** content, use a proper protected host (Cloudflare Stream, Vimeo Pro, AWS IVS) with signed URLs and optional DRM/watermarking.
+## 🧠 How it Stays "Clean"
 
-## License
+YouTube's IFrame API can't fully remove branding by itself, so this uses three powerful tricks:
 
-MIT
+```mermaid
+graph TD
+    A[Native YouTube Iframe] -->|controls=0| B(Hides Native Controls)
+    B -->|Custom Poster Overlay| C(Covers Title/Share/Logo on Pause)
+    C -->|CSS Iframe Crop| D(Crops out Top & Bottom Watermarks)
+    D --> E[Seamless Clean Player 🚀]
+```
+
+A transparent overlay also blocks all clicks into the iframe, preventing users from clicking out to YouTube or seeing right-click menus.
+
+## ⚠️ Disclaimer: This is not DRM
+
+The video is still served by YouTube, meaning the source ID is discoverable via devtools. Ideal for **normal / free lessons**. For **paid or piracy-sensitive content**, please use protected hosts (Cloudflare Stream, Vimeo Pro, AWS IVS) with signed URLs and optional DRM.
+
+## 📄 License
+
+This project is licensed under the MIT License.
